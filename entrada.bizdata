@@ -1,0 +1,7 @@
+Claves = [ "codigo", "producto", "precio_compra", "precio_venta", "stock"]
+imprimir("Hola");
+imprimir(" ");
+imprimir("Mundo");
+imprimirln(" ");    
+imprimirln("SI");
+imprimirln("SALE LFP");
