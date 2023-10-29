@@ -17,7 +17,7 @@
 #### <p align="right">CARNE : 201902672</p> 
 #### <p align="right">2993206770101</p> 
 #### <p align="right">SECCION B+</p> 
-#### <p align="center">29 de Octubre de 2023</p> 
+#### <p align="center">29 DE OCTUBRE DE 2023</p> 
 
 
 -----

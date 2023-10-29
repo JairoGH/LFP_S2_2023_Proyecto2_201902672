@@ -8,7 +8,7 @@
 #
 #
 
-### <p align="center">PROYECTO NO. 1 : MANUAL TÉCNICO</p> 
+### <p align="center">PROYECTO NO. 2 : MANUAL TÉCNICO</p> 
 #
 #
 #
@@ -16,7 +16,7 @@
 #### <p align="right">CARNE : 201902672</p> 
 #### <p align="right">2993206770101</p> 
 #### <p align="right">SECCION B+</p> 
-#### <p align="center">24 DE SEPTIEMBRE DE 2023</p> 
+#### <p align="center">29 DE OCTUBRE DE 2023</p> 
 
 
 -----
@@ -206,13 +206,45 @@ Se crea un el constructor con los atributos tales como lexema, tipo, fila, colum
 
 #### Instrucciones
 ##### Texto. py
+
+Se crea la un constructor con los atributos, texto, tipo, fila y columna. Esto para retornar los lexema, de su forma texto y tipo.
+
+![Texto](imagenes/ttexto.png)
+
 ##### DeclaracionClaves. py
+
+Se crea el constructor con los atributos, nombre, elementos, fila y columna, para las cuales usaremos en la declaracion de Declaracion de Claves.
+
+![Claves](imagenes/cclaves.png)
+
 ##### Registros. py
+
+Se crea el constructor con los atributos, nombre, numero, fila y columna, los cuales utilizaremos en el Registro de los productos.
+
+![Registros](imagenes/rregis.png)
+
 ##### Imprimir. py
+
+Se crea el constructor con los atributos, texto, fila y columna.
+Retornamos el texto, esto para crear la funcionalidad "imprimir" nos retorne el texto en consola.
+
+![Imprimir](imagenes/imprimirr.png)
+
 ##### Imprimirln. py
+
+Se crea el constructor con los atributos, texto, fila y columna.
+Retornamos el texto con un salto de linea, esto para crear la funcionalidad "imprimirln" nos retorne el texto en consola.
+
+![Imprimirln](imagenes/iimprimirln.png)
+
 ##### Datos. py
+
+Se crea el constructor con los atributos, elementos, fila y columna. Retornamos el elemento de registros, para asi mostrar en consola el contenido de los registros.
+
+![Datos](imagenes/datosssx.png)
 
 #### Anexos
 
-##### Expresiones Regulares
-##### Metodo del arbol mal echo xd
+##### AFD
+
+![AFD](imagenes/autom.jpg)
