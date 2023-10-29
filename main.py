@@ -5,6 +5,7 @@ from tkinter.scrolledtext import ScrolledText
 import subprocess
 from AnalizadorLexico import *
 from AnalizadorSintactico import *
+from Instrucciones.Texto import *
 
 
 class app:
@@ -13,7 +14,7 @@ class app:
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Analizador Léxico")
+        self.root.title("Analizador BizData")
         self.root.geometry("800x600")
 
         self.button_frame = tk.Frame(root)
@@ -31,10 +32,10 @@ class app:
         self.analyze_button = tk.Button(self.button_frame, text="Analizar", command=self.analyze_code)
         self.analyze_button.pack(side=tk.LEFT)
 
-        self.analyze_button = tk.Button(self.button_frame, text="Errores", command=self.errores)
+        self.analyze_button = tk.Button(self.button_frame, text="Reporte Errores", command=self.errores)
         self.analyze_button.pack(side=tk.LEFT)
 
-        self.analyze_button = tk.Button(self.button_frame, text="Reporte", command=self.reporte)
+        self.analyze_button = tk.Button(self.button_frame, text="Reporte Tokens", command=self.reporte)
         self.analyze_button.pack(side=tk.LEFT)
 
         self.exit_button = tk.Button(self.button_frame, text="Salir",width=6, command=root.quit)
@@ -107,22 +108,22 @@ class app:
                 else:
                     break
 
-            # Ejecutar instrucciones
+            #! Ejecutar instrucciones
 
             for elemento in lista_instrucciones:
                 if isinstance(elemento, DeclaracionClaves):
                     continue
-
                 elif isinstance(elemento, Imprimir):
                     imprimir_consola += elemento.ejecutarT()
-
                 elif isinstance(elemento, Imprimirln):
                     imprimir_consola += elemento.ejecutarT()
 
             print(imprimir_consola)
-
             for error in lista_errores:
                 print(error.operar(None))
+
+            for lis in lista_lexemas:
+                print(lis.operar(None))
 
             # Muestra el resultado en la consola de salida
             self.output_console.config(state='normal')
@@ -136,36 +137,114 @@ class app:
             print("Ocurrió un error al analizar el código: ", e)
 
 
-
-    def run_analysis(self, code):
-        # Aquí puedes realizar el análisis del código, por ejemplo, usando subprocess
-        try:
-            # Ejemplo: Ejecutar un comando de consola y capturar la salida
-            result = subprocess.check_output(["python", "-c", code], universal_newlines=True, stderr=subprocess.STDOUT)
-            return result
-        except subprocess.CalledProcessError as e:
-            return f"Error: {e.returncode}\n{e.output}"
-        except Exception as e:
-            return f"Error inesperado: {str(e)}"
-
     def errores(self):
         print("Mostrando errores...")
-        messagebox.showinfo("Mensaje:","Reporte de Errores Generados...")
+        self.generar_reporte_errores(lista_errores)
+        messagebox.showinfo("Mensaje:","Reporte de Errores Generados!")
 
     def reporte(self):
-        messagebox.showinfo("Mensaje:","Reporte Generado...")
+        self.generar_html_tokens(lista_lexemas)
+        messagebox.showinfo("Mensaje:","Reporte Generado!")
+
+    def ver_lista_lexemas(self):
+        for lis in lista_lexemas:
+            print(lis.lexema, lis.getFila, lis.getColumna, lis.tipo)
 
 
     def run_analysis(self, code):
-        # Aquí puedes realizar el análisis del código, por ejemplo, usando subprocess
+        
         try:
-            # Ejemplo: Ejecutar un comando de consola y capturar la salida
             result = subprocess.check_output(["python", "-c", code], universal_newlines=True, stderr=subprocess.STDOUT)
             return result
         except subprocess.CalledProcessError as e:
             return f"Error: {e.returncode}\n{e.output}"
         except Exception as e:
             return f"Error inesperado: {str(e)}"
+
+
+
+    def generar_reporte_errores(self, lista_errores):
+        # Encabezado de la tabla
+        tabla_html = """
+        <table border="1">
+            <tr>
+                <th>Error</th>
+                <th>Tipo</th>
+                <th>Fila</th>
+                <th>Columna</th>
+            </tr>
+        """
+
+        # Itera sobre la lista de errores y crea filas en la tabla
+        for error in lista_errores:
+            fila_html = f"""
+            <tr>
+                <td>{error.lexema}</td>
+                <td>{error.tipo}</td>
+                <td>{error.getFila()}</td>
+                <td>{error.getColumna()}</td>
+            </tr>
+            """
+            tabla_html += fila_html
+
+        # Cierra la tabla
+        tabla_html += "</table>"
+
+        # Encabezado y estilos adicionales
+        header = """
+        <html>
+        <head>
+            <style>
+                table {
+                    width: 80%;
+                    border-collapse: collapse;
+                    margin: 20px auto;
+                }
+                th, td {
+                    padding: 8px 12px;
+                    text-align: left;
+                }
+            </style>
+        </head>
+        <body>
+        """
+
+        footer = """
+        </body>
+        </html>
+        """
+
+        # Concatena todas las partes
+        reporte_html = header + "<h2>Reporte HTML de Errores</h2>" + tabla_html + footer
+
+        # Guarda el reporte en un archivo HTML
+        with open("Reporte_Errores_201902672.html", "w") as f:
+            f.write(reporte_html)
+
+
+    def generar_html_tokens(self, lista_lexemas):
+
+        with open('reporte_lexemas.html', 'w') as file:
+            file.write('<html>\n')
+            file.write('<head>\n')
+            file.write('<title>Reporte HTML de Lexemas</title>\n')
+            file.write('</head>\n')
+            file.write('<body>\n')
+            file.write('<h1>Reporte HTML de Lexemas</h1>\n')
+            file.write('<table border="1">\n')
+            file.write('<tr>\n')
+            file.write('<th>No</th><th>Lexema</th><th>Tipo</th><th>Fila</th><th>Columna</th>\n')
+            file.write('</tr>\n')
+
+            for i, lexema in enumerate(lista_lexemas, start=1):
+                file.write('<tr>\n')
+                file.write(f'<td>{i}</td><td>{lexema.lexema}</td><td>{lexema.tipo}</td><td>{lexema.fila}</td><td>{lexema.columna}</td>\n')
+                file.write('</tr>\n')
+
+            file.write('</table>\n')
+            file.write('</body>\n')
+            file.write('</html>')
+
 
 
 if __name__ == "__main__":
